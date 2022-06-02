@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>ExpoLIS Server</title>
+        <link rel="stylesheet" type="text/css" href="expolis.css">
+        <script language="JavaScript">
+            function toggle_data(p) {
+                var s = document.getElementById(p + 'all').checked;
+                for (f of ['no2', 'co', 'pm1', 'pm25', 'pm10', 'temperature', 'pressure', 'humidity']) {
+                    document.getElementById(p + f).disabled = s;
+                }
+            }
+            function is_datetime_local_supported () {
+                var input = document.createElement('input');
+                var value = 'a';
+                input.setAttribute('type', 'datetime-local');
+                input.setAttribute('value', value);
+                return (input.value !== value);
+            };
+            function check_browser_datetime () {
+                if (is_datetime_local_supported ()) {
+                    for (i of ['date-start-split', 'date-end-split']) {
+                        document.getElementById (i).style.display = 'none';
+                    }
+                }
+                else {
+                    for (i of ['date-start', 'date-end']) {
+                        document.getElementById (i).style.display = 'none';
+                    }
+                }
+            }
+            function validate_date (p) {
+                var y = document.getElementById (p + 'year').value;
+                var M = document.getElementById (p + 'month').value;
+                var d = document.getElementById (p + 'day').value;
+                var h = document.getElementById (p + 'hour').value;
+                var m = document.getElementById (p + 'minute').value;
+                if (y == '' && M == '' && d == '' && h == '' && m == '')
+                    return true;
+                if (y != '' && M != '' && d != '' && (h != '' || (h == '' && m == ''))) {
+                    y = parseInt (y);
+                    M = parseInt (M) - 1;
+                    d = parseInt (d);
+                    var t = new Date (y, M, d, 0, 0, 0);
+                    var ok = t.getFullYear () == y && t.getMonth () == M && t.getDate () == d;
+                    if (!ok)
+                        alert ("Invalid date!");
+                    return ok;
+                }
+                alert ('If you fill the starting or end date, then you need to specify the year, month and day. You can optionally fill the hour and minutes.');
+                return false;
+            }
+            function validate_form () {
+                var e = document.getElementById ('date-start');
+                return !(e.style.display == 'none' && (!validate_date ('date-start-') || !validate_date ('date-end-')));
+            }
+        </script>
+    </head>
+    <body onload="check_browser_datetime();">
+        <p>Welcome to the ExpoLIS server.</p>
+        <p>Fill the given form to perform a search on the data collected by the ExpoLIS sensor network, or to subscribe to receive notifications when new data is collected.</p>
+        <form>
+            <fieldset>
+                <legend>What to you want?</legend>
+                <label><input type="radio" name="request_type" onclick="document.getElementById('search').style.display = 'block';document.getElementById('subscribe').style.display = 'none'">Search</label>
+                <label><input type="radio" name="request_type" onclick="document.getElementById('search').style.display = 'none';document.getElementById('subscribe').style.display = 'block'">Subscribe</label>
+            </fieldset>
+        </form>
+        <form action="request_search.en.php" method="post" id="search" hidden onsubmit="return validate_form()">
+            <fieldset>
+                <legend>Data</legend>
+                <div><label><input type=checkbox name=data_all id="search_all" onclick="toggle_data('search_');">all</label></div>
+                <div><label><input type=checkbox name=data_no2 id="search_no2">NO2</label></div>
+                <div><label><input type=checkbox name=data_co id="search_co">CO</label></div>
+                <div><label><input type=checkbox name=data_pm1f id="search_pm1">PM 1</label></div>
+                <div><label><input type=checkbox name=data_pm25f id="search_pm25">PM 2.5</label></div>
+                <div><label><input type=checkbox name=data_pm10f id="search_pm10">PM 10</label></div>
+                <div><label><input type=checkbox name=data_temperature id="search_temperature">temperature</label></div>
+                <div><label><input type=checkbox name=data_pressure id="search_pressure">pressure</label></div>
+                <div><label><input type=checkbox name=data_humidity id="search_humidity">humidity</label></div>
+            </fieldset>
+            <div>
+                <label>
+                    From date:
+                    <input type=datetime-local step="3600" name="date-start" id="date-start">
+                </label>
+            </div>
+            <div id="date-start-split">
+                <input type=number name="date-start-year" size="1" min="2000" max="2050" placeholder="YYYY" id="date-start-year"> /
+                <input type=number name="date-start-month" size="1" min="1" max="12" placeholder="MMM" id="date-start-month"> /
+                <input type=number name="date-start-day" size="1" min="1" max="31" placeholder="DD" id="date-start-day">
+                &nbsp;
+                &nbsp;
+                <input type=number name="date-start-hour" size="1" min="0" max="23" placeholder="HH" id="date-start-hour"> :
+                <input type=number name="date-start-minute" size="1" min="0" max="59" placeholder="MM" id="date-start-minute">
+            </div>
+            <div>
+                <label>
+                    To date:
+                    <input type=datetime-local step="3600" name="date-end" id="date-end">
+                </label>
+            </div>
+            <div id="date-end-split">
+                <input type=number name="date-end-year" size="1" min="2000" max="2050" placeholder="YYYY" id="date-end-year"> /
+                <input type=number name="date-end-month" size="1" min="1" max="12" placeholder="MMM" id="date-end-month"> /
+                <input type=number name="date-end-day" size="1" min="1" max="31" placeholder="DD" id="date-end-day">
+                &nbsp;
+                &nbsp;
+                <input type=number name="date-end-hour" size="1" min="0" max="23" placeholder="HH" id="date-end-hour"> :
+                <input type=number name="date-end-minute" size="1" min="0" max="59" placeholder="MM" id="date-end-minute">
+            </div>
+            <div><button>Submit</button></div>
+        </form>
+        <form action="request_subscribe.en.php" method="post" id="subscribe" hidden>
+            <div><label>Email: <input type=email required name="email"></label></div>
+            <fieldset>
+                <legend>Periodicity</legend>
+                <div><label><input type="radio" name="period" value="daily" checked>Daily</label></div>
+                <div><label><input type="radio" name="period" value="hourly">Hourly</label></div>
+            </fieldset>
+            <fieldset>
+                <legend>Data</legend>
+                <div><label><input type=checkbox name=data_all id="subscribe_all" onclick="toggle_data('subscribe_');">all</label></div>
+                <div><label><input type=checkbox name=data_no2 id="subscribe_no2">NO2</label></div>
+                <div><label><input type=checkbox name=data_co id="subscribe_co">CO</label></div>
+                <div><label><input type=checkbox name=data_pm1f id="subscribe_pm1">PM 1</label></div>
+                <div><label><input type=checkbox name=data_pm25f id="subscribe_pm25">PM 2.5</label></div>
+                <div><label><input type=checkbox name=data_pm10f id="subscribe_pm10">PM 10</label></div>
+                <div><label><input type=checkbox name=data_temperature id="subscribe_temperature">temperature</label></div>
+                <div><label><input type=checkbox name=data_pressure id="subscribe_pressure">pressure</label></div>
+                <div><label><input type=checkbox name=data_humidity id="subscribe_humidity">humidity</label></div>
+            </fieldset>
+            <div><button>Submit</button></div>
+        </form>
+    </body>
+</html>
