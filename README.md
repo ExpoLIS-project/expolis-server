@@ -2,6 +2,21 @@
 
 This repository contains the sensor database, the html server, and the open service routing machine.  The source code in this repository is from the repositories expolis-database and expolis-routing-service.  The development and testining history is available in these two repositories.
 
+If you use this software please cite the following publication:
+
+Pedro Mariano, Susana Marta Almeida, Alexandre Almeida, Carolina Correia, Vânia Martins, José Moura, Tomás Brandão e Pedro Santana. "An Information System for Air Quality Monitoring using Mobile Sensor Networks". In: Proceedings of the 19th International Conference on Informatics in Control, Automation and Robotics (ICINCO 2022). INSTICC. SciTePress.
+
+    @InProceedings{Mariano2022a,
+       author =       {Pedro Mariano and Susana Marta Almeida and
+                       Alexandre Almeida and Carolina Correia and
+                       Vânia Martins and José Moura and
+                       Tomás Brandão and Pedro Santana},
+       title =        {An Information System for Air Quality Monitoring using Mobile Sensor Networks},
+       booktitle =    {Proceedings of the 19th International Conference on Informatics in Control, Automation and Robotics (ICINCO 2022)},
+       publisher =    {SciTePress},
+       organization = {INSTICC}
+    }
+
 # Requirements
 
     sudo apt install python3 python3-pip
