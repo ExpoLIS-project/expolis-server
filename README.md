@@ -4,11 +4,11 @@ This repository contains the sensor database, the html server, and the open serv
 
 If you use this software please cite the following publication:
 
-Pedro Mariano, Susana Marta Almeida, Alexandre Almeida, Carolina Correia, Vânia Martins, José Moura, Tomás Brandão e Pedro Santana. "An Information System for Air Quality Monitoring using Mobile Sensor Networks". In: Proceedings of the 19th International Conference on Informatics in Control, Automation and Robotics (ICINCO 2022). INSTICC. SciTePress.
-
-For more information about the ExpoLIS project see the following publication:
-
 Pedro Santana, Alexandre Almeida, Pedro Mariano, Carolina Correia, Vânia Martins, Susana Marta Almeida. (2021). Air quality mapping and visualisation: An affordable solution based on a vehicle-mounted sensor network. Journal of Cleaner Production, 315:128194.
+
+For complementary information see the following publication:
+
+Pedro Mariano, Susana Marta Almeida, Alexandre Almeida, Carolina Correia, Vânia Martins, José Moura, Tomás Brandão e Pedro Santana. "An Information System for Air Quality Monitoring using Mobile Sensor Networks". In: Proceedings of the 19th International Conference on Informatics in Control, Automation and Robotics (ICINCO 2022). INSTICC. SciTePress.
 
     @InProceedings{Mariano2022a,
        author =       {Pedro Mariano and Susana Marta Almeida and
